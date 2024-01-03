@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nominatim
+spec:
+  container:
+    - name: nominatim
+      image: mediagis/nominatim:4.2
+      volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: db_dir
+      env:
+        - name: PBF_URL
+          value: https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+      resources:
+        requests:
+#        limits: 
+#          cpu: 
+  volumes:
+    - name: db_dir
+      hostPath:
+        path: /fast/catenary/nominatim/db
+        type: DirectoryOrCreate
